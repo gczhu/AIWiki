@@ -26,12 +26,6 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
-    @ApiOperation("用户登录认证")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "用户名"),
-            @ApiImplicitParam(name = "password", value = "密码"),
-            @ApiImplicitParam(name = "email", value = "邮箱"),
-    })
     @PostMapping("/login")
     public Message loginIdentify(String username, String password) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();

@@ -187,7 +187,7 @@ public class EntryController {
 
             int res = entryMapper.update(entry, entryQueryWrapper);
             if (res > 0) {
-                return new Message(true, "修改词条成功", 20000);
+                return new Message(true, "修改内容已上报，请等待管理员审核", 20000);
             } else {
                 return new Message(false, "修改词条失败", 20001);
             }
@@ -255,7 +255,7 @@ public class EntryController {
 
             int res = entryMapper.insert(entry);
             if (res > 0) {
-                return new Message(true, "添加词条成功", 20000);
+                return new Message(true, "词条内容已上报，请等待管理员审核", 20000);
             } else {
                 return new Message(false, "添加词条失败", 20001);
             }
