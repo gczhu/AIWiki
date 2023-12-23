@@ -4,29 +4,27 @@ package com.zju.se.sem.entity;
  * @author 祝广程
  * @version 1.0
  */
-public class Tool {
-    private int tid;
+public class ToolInfo {
+    private int id;
     private String title;
     private String href;
     private String description;
     private String category;
-    private int recommend;
 
-    public Tool(int tid, String title, String href, String description, String category, int recommend) {
-        this.tid = tid;
+    public ToolInfo(int id, String title, String href, String description, String category) {
+        this.id = id;
         this.title = title;
         this.href = href;
         this.description = description;
         this.category = category;
-        this.recommend = recommend;
     }
 
-    public int getTid() {
-        return tid;
+    public int getId() {
+        return id;
     }
 
-    public void setTid(int tid) {
-        this.tid = tid;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -61,11 +59,14 @@ public class Tool {
         this.category = category;
     }
 
-    public int getRecommend() {
-        return recommend;
-    }
-
-    public void setRecommend(int recommend) {
-        this.recommend = recommend;
+    @Override
+    public String toString() {
+        return "ToolInfo{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", href='" + href + '\'' +
+                ", description='" + description + '\'' +
+                ", category='" + category + '\'' +
+                '}';
     }
 }

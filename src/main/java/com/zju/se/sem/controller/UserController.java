@@ -21,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user")
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class UserController {
     @Autowired
     private UserMapper userMapper;
@@ -36,8 +36,11 @@ public class UserController {
         if (users.isEmpty()) {
             return new Message(false, "密码错误", 20001);
         } else {
-            String token = JwtUtils.generateToken(Integer.toString(users.get(0).getUid()));
-            return new Message(true, "认证成功", 20000).data("token", token);
+            int uid = users.get(0).getUid();
+            String token = JwtUtils.generateToken(Integer.toString(uid));
+            return new Message(true, "认证成功", 20000)
+                    .data("token", token)
+                    .data("uid", uid);
         }
     }
 
@@ -108,8 +111,7 @@ public class UserController {
     }
 
     @PostMapping("/modifyInfo")
-    public Message modifyInfo(@RequestHeader("Authorization") String token,
-                              @RequestParam(defaultValue = "0") int uid,
+    public Message modifyInfo(@RequestParam(defaultValue = "0") int uid,
                               @RequestParam(defaultValue = "") String username,
                               @RequestParam(defaultValue = "") String email,
                               @RequestParam(defaultValue = "") String password,
@@ -123,16 +125,20 @@ public class UserController {
                               @RequestParam(defaultValue = "") String image,
                               @RequestParam(defaultValue = "") String description) {
 
-        int UID;
-        try {
-            Claims claims = JwtUtils.getClaimsByToken(token);
-            UID = Integer.parseInt(claims.getSubject());
-        } catch (Exception e) {
-            return new Message(false, "用户信息修改失败，token错误", 50001);
+//        int UID;
+//        try {
+//            Claims claims = JwtUtils.getClaimsByToken(token);
+//            UID = Integer.parseInt(claims.getSubject());
+//        } catch (Exception e) {
+//            return new Message(false, "用户信息修改失败，token错误", 50001);
+//        }
+
+        if (uid == 0) {
+            return new Message(false, "未指定uid", 20001);
         }
 
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getUid, UID);
+        queryWrapper.eq(User::getUid, uid);
         User user = userMapper.selectList(queryWrapper).get(0);
 
         if (username.length() != 0) {

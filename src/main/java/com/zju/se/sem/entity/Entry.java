@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author 祝广程
@@ -123,4 +124,16 @@ public class Entry {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Entry entry = (Entry) o;
+        return eid == entry.eid;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(eid);
+    }
 }

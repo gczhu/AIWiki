@@ -1,5 +1,7 @@
 package com.zju.se.sem.entity;
 
+import java.util.Objects;
+
 /**
  * @author 祝广程
  * @version 1.0
@@ -37,4 +39,16 @@ public class GoodEntry {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GoodEntry goodEntry = (GoodEntry) o;
+        return id == goodEntry.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
