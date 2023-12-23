@@ -11,8 +11,8 @@ public class User {
     @TableId(type = IdType.AUTO)
     private int uid;
     private String username;
-    private String email;
     private String password;
+    private String email;
     private int role;
     private int points;
     private int level;
@@ -23,11 +23,11 @@ public class User {
     private String image;
     private String description;
 
-    public User(int uid, String username, String email, String password, int role, int points, int level, String name, char gender, String phone, String birth, String image, String description) {
+    public User(int uid, String username, String password, String email, int role, int points, int level, String name, char gender, String phone, String birth, String image, String description) {
         this.uid = uid;
         this.username = username;
-        this.email = email;
         this.password = password;
+        this.email = email;
         this.role = role;
         this.points = points;
         this.level = level;
@@ -37,15 +37,6 @@ public class User {
         this.birth = birth;
         this.image = image;
         this.description = description;
-    }
-
-    public User(String username, String email, String password, int role, int points, int level) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-        this.points = points;
-        this.level = level;
     }
 
     public int getUid() {
@@ -157,8 +148,8 @@ public class User {
         return "User{" +
                 "uid=" + uid +
                 ", username='" + username + '\'' +
-                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
                 ", role=" + role +
                 ", points=" + points +
                 ", level=" + level +
