@@ -22,20 +22,15 @@ public class ToolController {
     private ToolMapper toolMapper;
 
     @GetMapping("/getTool")
-    public Message getTool(String id) {
-        // 根据id查找工具信息
-        LambdaQueryWrapper<Tool> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(Tool::getTid, id);
-        List<Tool> tools = toolMapper.selectList(queryWrapper);
-
-        if (tools.isEmpty()) {
-            return new Message(false, "该工具不存在", 20001);
-        } else {
-            Tool tool = tools.get(0);
-            ToolInfo res = new ToolInfo(tool.getTid(), tool.getTitle(), tool.getHref(),
-                    tool.getDescription(), tool.getCategory());
-            return new Message(true, "工具信息获取成功", 20000).data("tool", res);
+    public Message getTool() {
+        LambdaQueryWrapper<Tool> toolQueryWrapper = new LambdaQueryWrapper<>();
+        List<Tool> tools = toolMapper.selectList(toolQueryWrapper);
+        List<ToolInfo> res = new ArrayList<>();
+        for (int i = 0; i < tools.size(); i++) {
+            Tool tool = tools.get(i);
+            res.add(new ToolInfo(tool.getTid(), tool.getTitle(), tool.getHref(), tool.getDescription(), tool.getCategory()));
         }
+        return new Message(true, "推荐工具获取成功", 20000).data("tools", res);
     }
 
     @GetMapping("/recommendTool")
