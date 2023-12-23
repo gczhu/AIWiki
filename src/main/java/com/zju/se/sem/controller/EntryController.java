@@ -38,12 +38,13 @@ public class EntryController {
                 List<Topic> topics = new ArrayList<>();
                 for (int i = 0; i < entries.size(); i++) {
                     Entry entry = entries.get(i);
-                    topics.add(new Topic(entry.getEid(), entry.getTitle(), entry.getDescription(), entry.getCategory(), entry.getImage()));
+                    topics.add(new Topic(entry.getEid(), entry.getTitle(), entry.getDescription(), entry.getCategory(),
+                            entry.getImage()));
                 }
 
                 return new Message(true, "专题信息获取成功", 20000)
                         .data("topics", topics);
-            } else {    // 如果指定了uid，则进行个性化推荐
+            } else { // 如果指定了uid，则进行个性化推荐
                 // 查找与该用户相关联的词条ID
                 LambdaQueryWrapper<UserEntry> userEntryQueryWrapper = new LambdaQueryWrapper<>();
                 userEntryQueryWrapper.eq(UserEntry::getUid, uid)
@@ -60,7 +61,8 @@ public class EntryController {
                     List<Topic> topics = new ArrayList<>();
                     for (int i = 0; i < entries.size(); i++) {
                         Entry entry = entries.get(i);
-                        topics.add(new Topic(entry.getEid(), entry.getTitle(), entry.getDescription(), entry.getCategory(), entry.getImage()));
+                        topics.add(new Topic(entry.getEid(), entry.getTitle(), entry.getDescription(),
+                                entry.getCategory(), entry.getImage()));
                     }
 
                     return new Message(true, "专题信息获取成功", 20000)
@@ -74,7 +76,7 @@ public class EntryController {
                     entryQueryWrapper.eq(Entry::getEid, userEntries.get(i).getEid());
                     Entry entry = entryMapper.selectList(entryQueryWrapper).get(0);
                     topics.add(new Topic(entry.getEid(), entry.getTitle(), entry.getDescription(), entry.getCategory(),
-                        entry.getImage()));
+                            entry.getImage()));
                 }
 
                 return new Message(true, "专题信息获取成功", 20000)
@@ -272,7 +274,8 @@ public class EntryController {
             if (res <= 0) {
                 return new Message(false, "词条详情获取失败", 20001);
             }
-            EntryInfo entryInfo = new EntryInfo(id, entry.getTitle(), entry.getContent(), new ArrayList<>(relatedEntries));
+            EntryInfo entryInfo = new EntryInfo(id, entry.getTitle(), entry.getContent(),
+                    new ArrayList<>(relatedEntries));
 
             return new Message(true, "词条详情获取成功", 20000)
                     .data("entryInfo", entryInfo);
@@ -306,7 +309,7 @@ public class EntryController {
             resultEntries.addAll(entries);
 
             List<Entry> res = new ArrayList<>(resultEntries);
-            if (res.size() == 0) {      // 如果没有根据标签和文本内容搜索到相关内容，就返回优质词条
+            if (res.size() == 0) { // 如果没有根据标签和文本内容搜索到相关内容，就返回优质词条
                 // 获取所有的词条
                 List<Entry> allEntries = entryMapper.selectList(new LambdaQueryWrapper<>());
 
@@ -314,8 +317,10 @@ public class EntryController {
                 Collections.sort(allEntries, new Comparator<Entry>() {
                     @Override
                     public int compare(Entry entry1, Entry entry2) {
-                        Double points1 = entry1.getVisits() * 0.05 + entry1.getLikes() * 0.35 + entry1.getFavors() * 0.6;
-                        Double points2 = entry2.getVisits() * 0.05 + entry2.getLikes() * 0.35 + entry2.getFavors() * 0.6;
+                        Double points1 = entry1.getVisits() * 0.05 + entry1.getLikes() * 0.35
+                                + entry1.getFavors() * 0.6;
+                        Double points2 = entry2.getVisits() * 0.05 + entry2.getLikes() * 0.35
+                                + entry2.getFavors() * 0.6;
                         return points2.compareTo(points1);
                     }
                 });
@@ -503,6 +508,32 @@ public class EntryController {
 
         } catch (Exception e) {
             return new Message(false, "收藏词条失败", 20001);
+        }
+    }
+
+    @PostMapping("/recommendEntry")
+    public Message recommendEntry(
+            @RequestParam(defaultValue = "0") int uid) {
+        try {
+            if (uid == 0) {
+                return new Message(false, "推荐词条查询失败", 20001);
+            }
+            LambdaQueryWrapper<UserEntry> UserEntryQueryWrapper = new LambdaQueryWrapper<>();
+            UserEntryQueryWrapper.eq(UserEntry::getUid, uid).eq(UserEntry::getType, "recommend");
+            List<UserEntry> recommend_eids = userEntryMapper.selectList(UserEntryQueryWrapper);
+            List<Entry> recommend = new ArrayList<>();
+            for (int i = 0; i < recommend_eids.size(); i++) {
+                LambdaQueryWrapper<Entry> EntryQueryWrapper = new LambdaQueryWrapper<>();
+                EntryQueryWrapper.eq(Entry::getEid, recommend_eids.get(i).getEid());
+                recommend.add(entryMapper.selectOne(EntryQueryWrapper));
+            }
+
+            return new Message(true, "收藏词条成功", 20000)
+                    .data("recommend", recommend);
+
+        } catch (Exception e) {
+            return new Message(false, "收藏词条失败", 20001)
+                    .data("recommend", new ArrayList<Entry>());
         }
     }
 
