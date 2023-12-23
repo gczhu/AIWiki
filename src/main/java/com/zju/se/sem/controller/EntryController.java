@@ -73,7 +73,8 @@ public class EntryController {
                     LambdaQueryWrapper<Entry> entryQueryWrapper = new LambdaQueryWrapper<>();
                     entryQueryWrapper.eq(Entry::getEid, userEntries.get(i).getEid());
                     Entry entry = entryMapper.selectList(entryQueryWrapper).get(0);
-                    topics.add(new Topic(entry.getEid(), entry.getTitle(), entry.getDescription(), entry.getCategory(), entry.getImage()));
+                    topics.add(new Topic(entry.getEid(), entry.getTitle(), entry.getDescription(), entry.getCategory(),
+                        entry.getImage()));
                 }
 
                 return new Message(true, "专题信息获取成功", 20000)
@@ -342,9 +343,9 @@ public class EntryController {
 
     @PostMapping("/modifyEntry")
     public Message modifyEntry(@RequestHeader("Authorization") String token,
-                               @RequestParam(defaultValue = "0") int id,
-                               @RequestParam(defaultValue = "") String title,
-                               @RequestParam(defaultValue = "") String text) {
+            @RequestParam(defaultValue = "0") int id,
+            @RequestParam(defaultValue = "") String title,
+            @RequestParam(defaultValue = "") String text) {
         try {
             Claims claims;
             int uid;
@@ -383,11 +384,11 @@ public class EntryController {
 
     @PostMapping("/addEntry")
     public Message addEntry(@RequestHeader("Authorization") String token,
-                            @RequestParam(defaultValue = "0") int id,
-                            @RequestParam(defaultValue = "") String title,
-                            @RequestParam(defaultValue = "") String text,
-                            @RequestParam(defaultValue = "") String description,
-                            @RequestParam(defaultValue = "") String category) {
+            @RequestParam(defaultValue = "0") int id,
+            @RequestParam(defaultValue = "") String title,
+            @RequestParam(defaultValue = "") String text,
+            @RequestParam(defaultValue = "") String description,
+            @RequestParam(defaultValue = "") String category) {
         try {
             Claims claims;
             int uid;
@@ -446,6 +447,62 @@ public class EntryController {
 
         } catch (Exception e) {
             return new Message(false, "添加词条失败", 20001);
+        }
+    }
+
+    @PostMapping("/likeEntry")
+    public Message likeEntry(
+            @RequestParam(defaultValue = "0") int id,
+            @RequestParam(defaultValue = "0") int uid) {
+        try {
+            if (id == 0) {
+                return new Message(false, "点赞词条失败", 20001);
+            }
+            LambdaQueryWrapper<Entry> entryQueryWrapper = new LambdaQueryWrapper<>();
+            entryQueryWrapper.eq(Entry::getEid, id);
+            Entry entry = entryMapper.selectList(entryQueryWrapper).get(0);
+            UserEntry user_entry = new UserEntry();
+            if (uid != 0) {
+                user_entry.setEid(id);
+                user_entry.setUid(uid);
+                user_entry.setType("like");
+                userEntryMapper.insert(user_entry);
+            }
+            entry.setLikes(entry.getLikes() + 1);
+            int res = entryMapper.update(entry, entryQueryWrapper);
+            if (res > 0) {
+                return new Message(true, "点赞词条成功", 20000);
+            } else {
+                return new Message(false, "点赞词条失败", 20001);
+            }
+
+        } catch (Exception e) {
+            return new Message(false, "点赞词条失败", 20001);
+        }
+    }
+
+    @PostMapping("/favorEntry")
+    public Message favorEntry(
+            @RequestParam(defaultValue = "0") int id,
+            @RequestParam(defaultValue = "0") int uid) {
+        try {
+            if (id == 0 || uid == 0) {
+                return new Message(false, "收藏词条失败", 20001);
+            }
+            UserEntry user_entry = new UserEntry();
+            user_entry.setEid(id);
+            user_entry.setUid(uid);
+            user_entry.setType("favor");
+            int res = userEntryMapper.insert(user_entry);
+
+            if (res > 0) {
+                return new Message(true, "收藏词条成功", 20000);
+            } else {
+                return new Message(false, "收藏词条失败", 20001);
+            }
+
+        } catch (Exception e) {
+            return new Message(false, "收藏词条失败", 20001);
         }
     }
 

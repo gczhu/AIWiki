@@ -13,12 +13,17 @@ public class UserEntry {
     private int uid;
     private int eid;
     private String type;
+    private String type;
 
-    public UserEntry(int ueid, int uid, int eid, String type) {
+    public UserEntry(int ueid, int uid, int eid, String type, String type) {
         this.ueid = ueid;
         this.uid = uid;
         this.eid = eid;
         this.type = type;
+        this.type = type;
+    }
+
+    public UserEntry() {
     }
 
     public int getUeid() {
@@ -53,6 +58,21 @@ public class UserEntry {
         this.type = type;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public int getType() {
+        return eid;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
     @Override
     public String toString() {
         return "UserEntry{" +
