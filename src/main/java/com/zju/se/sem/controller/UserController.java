@@ -175,7 +175,7 @@ public class UserController {
             user.setName(name);
         }
         if (gender.length() != 0) {
-            user.setGender(gender.toCharArray()[0]);
+            user.setGender(gender);
         }
         if (phone.length() != 0) {
             user.setPhone(phone);
