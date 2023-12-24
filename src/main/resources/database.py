@@ -13,7 +13,7 @@ import random
 # echo=True， 可以在控制台看到操作涉及的SQL语言
 
 username = "root"
-password = "zgc112912"
+password = "azx"
 database = "ai_wiki"
 
 engine = create_engine(
@@ -48,7 +48,7 @@ class entry(Base):
     content = Column(Text, nullable=True)
     description = Column(String(256), nullable=True)
     category = Column(String(30), nullable=True)
-    image = Column(String(30), nullable=True)
+    image = Column(String(512), nullable=True)
     visits = Column(Integer, default=0)
     likes = Column(Integer, default=0)
     favors = Column(Integer, default=0)
