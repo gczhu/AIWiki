@@ -13,7 +13,7 @@ import random
 # echo=True， 可以在控制台看到操作涉及的SQL语言
 
 username = "root"
-password = "azx"
+password = "zgc112912"
 database = "ai_wiki"
 
 engine = create_engine(
