@@ -191,35 +191,40 @@ if __name__ == '__main__':
                  user(username="wangwu", password="123456", email="3210105954@zju.edu.cn", role="1")]
     # session.add(p)
     session.add_all(user_list)
-    entry_list = [entry(eid=1001, title="什么是LoRA？一文读懂低秩适应的概念、原理、优缺点和主要应用", category="home"),
+    entry_list = [entry(eid=1001, title="什么是LoRA？一文读懂低秩适应的概念、原理、优缺点和主要应用", category="home", image="image/topicPics/what-is-lora.png"),
                   entry(eid=1002, title="什么是RLHF基于人类反馈的强化学习？",
-                        category="understanding"),
+                        category="understanding", image="image/topicPics/what-is-rlhf.png"),
                   entry(eid=1003, title="卷积神经网络（CNN）是什么？一文读懂卷积神经网络的概念、原理、优缺点和主要应用",
-                        category="understanding"),
-                  entry(eid=1004, title="情感分析", category="understanding"),
-                  entry(eid=1005, title="数据标注", category="understanding"),
-                  entry(eid=1006, title="预训练(Pre-training)", category="home"),
+                        category="understanding", image="image/topicPics/convolutional-neural-network-1.png"),
+                  entry(eid=1004, title="情感分析", category="understanding",
+                        image="image/topicPics/what-is-sentiment-analysis-1.png"),
+                  entry(eid=1005, title="数据标注", category="understanding",
+                        image="image/topicPics/data-annotation.png"),
+                  entry(eid=1006, title="预训练(Pre-training)", category="home",
+                        image="image/topicPics/what-is-pre-training.png"),
                   entry(eid=1007, title="大语言模型(LLM)",
-                        category="understanding"),
-                  entry(eid=1008, title="多模态", category="understanding"),
+                        category="understanding", image="image/topicPics/what-is-large-language-model.png"),
+                  entry(eid=1008, title="多模态", category="understanding",
+                        image="image/topicPics/what-is-multimodal-deep-learning.png"),
                   entry(eid=1009, title="强化学习(Reinforcement Learning)",
-                        category="home"),
+                        category="home", image="image/topicPics/reinforcement-learning.png"),
                   entry(eid=1010, title="无监督学习(Unsupervised Learning)",
-                        category="understanding"),
+                        category="understanding", image="image/topicPics/what-is-unsupervised-learning-1.png"),
                   entry(eid=1011, title="自然语言处理(NLP)",
-                        category="understanding"),
-                  entry(eid=1012, title="通用人工智能(AGI)", category="home"),
+                        category="understanding", image="image/topicPics/what-is-nlp.png"),
+                  entry(eid=1012, title="通用人工智能(AGI)", category="home",
+                        image="image/topicPics/agi-artificial-general-intelligence.png"),
                   entry(eid=1013, title="神经网络(Neural Network)",
-                        category="understanding"),
+                        category="understanding", image="image/topicPics/what-is-neural-network.png"),
                   entry(
-                      eid=1014, title="GAN，生成式对抗网络（Generative Adversarial Network）", category="news")
+                      eid=1014, title="GAN，生成式对抗网络（Generative Adversarial Network）", category="news", image="image/topicPics/what-is-gan.png")
                   ]
     session.add_all(entry_list)
-    user_entry_list= [user_entry(1,1001,"recommend"),
-                      user_entry(1,1002,"recommend"),
-                      user_entry(1,1003,"like"),
-                      user_entry(1,1004,"favor"),
-                      user_entry(1,1005,"like"),
-                      user_entry(1,1006,"recommend")
-                      ]
+    user_entry_list = [user_entry(1, 1001, "recommend"),
+                       user_entry(1, 1002, "recommend"),
+                       user_entry(1, 1003, "like"),
+                       user_entry(1, 1004, "favor"),
+                       user_entry(1, 1005, "like"),
+                       user_entry(1, 1006, "recommend")
+                       ]
     session.commit()
