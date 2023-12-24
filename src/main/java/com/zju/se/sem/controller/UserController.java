@@ -27,10 +27,10 @@ public class UserController {
     private UserMapper userMapper;
 
     @PostMapping("/login")
-    public Message loginIdentify(String username, String password) {
+    public Message login(@RequestBody User user) {
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getUsername, username);
-        queryWrapper.eq(User::getPassword, password);
+        queryWrapper.eq(User::getUsername, user.getUsername());
+        queryWrapper.eq(User::getPassword, user.getPassword());
 
         List<User> users = userMapper.selectList(queryWrapper);
         if (users.isEmpty()) {
@@ -56,10 +56,10 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public Message userRegister(String username, String password, String email, int role) {
+    public Message userRegister(@RequestBody User user) {
         // 判断用户名是否已经存在
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getUsername, username);
+        queryWrapper.eq(User::getUsername, user.getUsername());
         List<User> users = userMapper.selectList(queryWrapper);
         if (!users.isEmpty()) {
             return new Message(false, "用户名已存在", 20001);
@@ -67,14 +67,12 @@ public class UserController {
 
         // 判断邮箱地址是否已经存在
         queryWrapper = new LambdaQueryWrapper<>();
-        queryWrapper.eq(User::getEmail, email);
+        queryWrapper.eq(User::getEmail, user.getEmail());
         users = userMapper.selectList(queryWrapper);
         if (!users.isEmpty()) {
             return new Message(false, "邮箱地址已存在", 20001);
         }
 
-        // 插入用户信息
-        User user = new User(username, email, password, role, 0, 1);
         if (userMapper.insert(user) > 0) {
             return new Message(true, "注册成功", 20000);
         } else {
