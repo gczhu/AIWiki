@@ -21,6 +21,9 @@ public class UserEntry {
         this.type = type;
     }
 
+    public UserEntry() {
+    }
+
     public int getUeid() {
         return ueid;
     }
@@ -45,8 +48,8 @@ public class UserEntry {
         this.eid = eid;
     }
 
-    public String getType() {
-        return type;
+    public int getType() {
+        return eid;
     }
 
     public void setType(String type) {
