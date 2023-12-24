@@ -9,9 +9,9 @@ public class Topic {
     private String title;
     private String description;
     private String category;
-    private byte[] image;
+    private String image;
 
-    public Topic(int id, String title, String description, String category, byte[] image) {
+    public Topic(int id, String title, String description, String category, String image) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -51,11 +51,11 @@ public class Topic {
         this.category = category;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -66,6 +66,7 @@ public class Topic {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", category='" + category + '\'' +
+                ", image='" + image + '\'' +
                 '}';
     }
 }

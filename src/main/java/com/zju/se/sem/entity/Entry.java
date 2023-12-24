@@ -17,12 +17,12 @@ public class Entry {
     private String content;
     private String description;
     private String category;
-    private byte[] image;
+    private String image;
     private int visits;
     private int likes;
     private int favors;
 
-    public Entry(int eid, String title, String content, String description, String category, byte[] image, int visits, int likes, int favors) {
+    public Entry(int eid, String title, String content, String description, String category, String image, int visits, int likes, int favors) {
         this.eid = eid;
         this.title = title;
         this.content = content;
@@ -77,11 +77,11 @@ public class Entry {
         this.category = category;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -107,21 +107,6 @@ public class Entry {
 
     public void setFavors(int favors) {
         this.favors = favors;
-    }
-
-    @Override
-    public String toString() {
-        return "Entry{" +
-                "eid=" + eid +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", description='" + description + '\'' +
-                ", category='" + category + '\'' +
-                ", image=" + Arrays.toString(image) +
-                ", visits=" + visits +
-                ", likes=" + likes +
-                ", favors=" + favors +
-                '}';
     }
 
     @Override
