@@ -2,14 +2,13 @@ package com.zju.se.sem.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.zju.se.sem.entity.*;
-import com.zju.se.sem.mapper.EntryMapper;
-import com.zju.se.sem.mapper.EntryTagMapper;
-import com.zju.se.sem.mapper.UserEntryMapper;
+import com.zju.se.sem.mapper.*;
 import com.zju.se.sem.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -25,6 +24,10 @@ public class EntryController {
     private UserEntryMapper userEntryMapper;
     @Autowired
     private EntryTagMapper entryTagMapper;
+    @Autowired
+    private ErrorCorrectionMapper errorCorrectionMapper;
+    @Autowired
+    private EntrySubmissionMapper entrySubmissionMapper;
 
     @GetMapping("/topics")
     public Message getTopics(@RequestParam(defaultValue = "0") int uid) {
@@ -375,7 +378,8 @@ public class EntryController {
                 entry.setContent(text);
             }
 
-            int res = entryMapper.update(entry, entryQueryWrapper);
+            ErrorCorrection errorCorrection = new ErrorCorrection(uid, entry);
+            int res = errorCorrectionMapper.insert(errorCorrection);
             if (res > 0) {
                 return new Message(true, "修改内容已上报，请等待管理员审核", 20000);
             } else {
@@ -443,7 +447,8 @@ public class EntryController {
                 entry.setCategory(category);
             }
 
-            int res = entryMapper.insert(entry);
+            EntrySubmission entrySubmission = new EntrySubmission(uid, entry);
+            int res = entrySubmissionMapper.insert(entrySubmission);
             if (res > 0) {
                 return new Message(true, "词条内容已上报，请等待管理员审核", 20000);
             } else {

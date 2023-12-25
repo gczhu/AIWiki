@@ -6,9 +6,6 @@ import com.zju.se.sem.entity.User;
 import com.zju.se.sem.mapper.UserMapper;
 import com.zju.se.sem.utils.JwtUtils;
 import io.jsonwebtoken.Claims;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -175,7 +172,7 @@ public class UserController {
             user.setName(name);
         }
         if (gender.length() != 0) {
-            user.setGender(gender.toCharArray()[0]);
+            user.setGender(String.valueOf(gender.toCharArray()[0]));
         }
         if (phone.length() != 0) {
             user.setPhone(phone);

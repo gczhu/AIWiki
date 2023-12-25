@@ -1,8 +1,8 @@
 from sqlalchemy import create_engine, Column, Integer, Float, String, DateTime, TIMESTAMP, Double, Text, BLOB
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-
-from datetime import datetime
+from sqlalchemy_utils import database_exists, create_database, drop_database
+from datetime import datetime, timedelta
 import time
 import random
 
@@ -13,14 +13,9 @@ import random
 # echo=True， 可以在控制台看到操作涉及的SQL语言
 
 username = "root"
-password = "zgc112912"
+password = "azx"
 database = "ai_wiki"
 
-engine = create_engine(
-    "mysql+pymysql://"+username+":"+password+"@127.0.0.1:3306/"+database, echo=True)
-
-# 创建缓存对象
-Session = sessionmaker(bind=engine)
 # session = Session()
 # 声明基类
 Base = declarative_base()
@@ -73,13 +68,29 @@ class entry_submission(Base):
     esid = Column(Integer, nullable=False,
                   autoincrement=True, primary_key=True)
     uid = Column(Integer, nullable=False)
+    eid = Column(Integer, nullable=False)
+    title = Column(String(100), nullable=False)
     content = Column(Text, nullable=False)
-    submitTime = Column(DateTime, nullable=False)
-    status = Column(DateTime, nullable=False)
+    description = Column(String(256), nullable=True)
+    category = Column(String(30), nullable=True)
+    image = Column(String(30), nullable=True)
+    submit_time = Column(DateTime, nullable=False)
+    status = Column(String(10), nullable=False)
     admin = Column(Integer, nullable=False)
 
+    def __init__(self, eid, uid, title, category, content="", status="待处理", submit_time=None, admin=1):
+            self.eid = eid
+            self.uid = uid
+            self.title = title
+            self.content = content
+            self.category = category
+            self.status = status
+            # 随机生成提交时间（示例：当前时间减去0到10天）
+            self.submit_time = submit_time if submit_time else datetime.now() - timedelta(days=random.randint(0, 10))
+            self.admin = admin
+
     def __repr__(self):
-        return self.device_id+'-'+str(self.timestamp)
+            return f"entry(eid={self.eid}, title='{self.title}', category='{self.category}', content='{self.content}', status='{self.status}', submitTime='{self.submitTime}', admin={self.admin})"
 
 
 class entry_submission_review(Base):
@@ -88,8 +99,44 @@ class entry_submission_review(Base):
     admin = Column(Integer, nullable=False)
     esid = Column(Integer, nullable=False)
     status = Column(String(10), nullable=False)
-    comment = Column(Text, nullable=False)
-    reviewTime = Column(DateTime, nullable=False)
+    comment = Column(Text, nullable=True)
+    review_time = Column(DateTime, nullable=False)
+
+class error_correction(Base):
+    __tablename__ = 'error_correction'
+    ecid = Column(Integer, nullable=False,
+                  autoincrement=True, primary_key=True)
+    uid = Column(Integer, nullable=False)
+    eid = Column(Integer, nullable=False)
+    title = Column(String(100), nullable=False)
+    content = Column(Text, nullable=False)
+    description = Column(String(256), nullable=True)
+    category = Column(String(30), nullable=True)
+    image = Column(String(30), nullable=True)
+    submit_time = Column(DateTime, nullable=False)
+    status = Column(String(10), nullable=False)
+    admin = Column(Integer, nullable=False)
+
+    def __init__(self, eid, uid, title, content="", status="待处理", submit_time=None, admin=1):
+                self.eid = eid
+                self.uid = uid
+                self.eid = eid
+                self.title = title
+                self.content = content
+                self.status = status
+                # 随机生成提交时间（示例：当前时间减去0到10天）
+                self.submit_time = submit_time if submit_time else datetime.now() - timedelta(days=random.randint(0, 10))
+                self.admin = admin
+
+class error_correction_review(Base):
+    __tablename__ = 'error_correction_review'
+    ecrid = Column(Integer, autoincrement=True, primary_key=True)
+    admin = Column(Integer, nullable=False)
+    ecid = Column(Integer, nullable=False)
+    status = Column(String(10), nullable=False)
+    comment = Column(Text, nullable=True)
+    review_time = Column(DateTime, nullable=False)
+
 
 
 class entry_tag(Base):
@@ -135,7 +182,7 @@ class user(Base):
     points = Column(Integer, nullable=True)
     level = Column(Integer, nullable=True)
     name = Column(String(30), nullable=True)
-    gender = Column(String(5), nullable=True)
+    gender = Column(String(1), nullable=True)
     phone = Column(String(20), nullable=True)
     birth = Column(DateTime, nullable=True)
     image = Column(String(256), nullable=True)
@@ -178,43 +225,63 @@ class user_tag(Base):
     relevance = Column(Double, nullable=False)
 
 
-# 检查表的存在性，如果不存在的话会执行表的创建工作
-Base.metadata.create_all(bind=engine)
-
+# 新增函数，若有旧的数据库则删除，没有则创建新的数据库，便于修改表结构
+def drop_and_create_database(engine):
+    if database_exists(engine.url):
+        print(f"Deleting database {database}")
+        drop_database(engine.url)
+    print(f"Creating database {database}")
+    create_database(engine.url)
 
 if __name__ == '__main__':
+     # 连接到 MySQL 服务器（不指定数据库）
+    engine = create_engine(f"mysql+pymysql://{username}:{password}@127.0.0.1:3306/{database}", echo=True)
+    
+    # 若有旧的数据库则删除，没有则创建新的数据库
+    drop_and_create_database(engine)
 
+    # 重新连接到新创建的数据库
+    engine = create_engine(f"mysql+pymysql://{username}:{password}@127.0.0.1:3306/{database}", echo=True)
+
+    # 检查表的存在性，如果不存在的话会执行表的创建工作
+    Base.metadata.create_all(bind=engine)
+
+    # 创建缓存对象
+    Session = sessionmaker(bind=engine)
     session = Session()
-    user_list = [user(username="zhangsan", password="123456", email="3210105952@zju.edu.cn", role="0"),
+    user_list = [user(username="admin", password="123456", email="admin@zju.edu.cn", role="1"),
+                 user(username="zhangsan", password="123456", email="3210105952@zju.edu.cn", role="0"),
                  user(username="lisi", password="123456",
                       email="3210105953@zju.edu.cn", role="0"),
-                 user(username="wangwu", password="123456", email="3210105954@zju.edu.cn", role="1")]
+                 user(username="wangwu", password="123456", email="3210105954@zju.edu.cn", role="1"),]
     # session.add(p)
     session.add_all(user_list)
-    entry_list = [entry(eid=1001, title="什么是LoRA？一文读懂低秩适应的概念、原理、优缺点和主要应用", category="home"),
-                  entry(eid=1002, title="什么是RLHF基于人类反馈的强化学习？",
-                        category="understanding"),
-                  entry(eid=1003, title="卷积神经网络（CNN）是什么？一文读懂卷积神经网络的概念、原理、优缺点和主要应用",
-                        category="understanding"),
-                  entry(eid=1004, title="情感分析", category="understanding"),
-                  entry(eid=1005, title="数据标注", category="understanding"),
-                  entry(eid=1006, title="预训练(Pre-training)", category="home"),
-                  entry(eid=1007, title="大语言模型(LLM)",
-                        category="understanding"),
-                  entry(eid=1008, title="多模态", category="understanding"),
-                  entry(eid=1009, title="强化学习(Reinforcement Learning)",
-                        category="home"),
-                  entry(eid=1010, title="无监督学习(Unsupervised Learning)",
-                        category="understanding"),
-                  entry(eid=1011, title="自然语言处理(NLP)",
-                        category="understanding"),
-                  entry(eid=1012, title="通用人工智能(AGI)", category="home"),
-                  entry(eid=1013, title="神经网络(Neural Network)",
-                        category="understanding"),
-                  entry(
-                      eid=1014, title="GAN，生成式对抗网络（Generative Adversarial Network）", category="news")
-                  ]
+    entry_list = [
+        entry(eid=1003, title="卷积神经网络（CNN）是什么？一文读懂卷积神经网络的概念、原理、优缺点和主要应用", category="understanding", content="卷积神经网络（CNN）是一种..."),
+        entry(eid=1004, title="情感分析", category="understanding", content="情感分析是自然语言处理的一个分支，它用来..."),
+        entry(eid=1005, title="数据标注", category="understanding", content="数据标注是指在数据处理和机器学习中，将原始数据..."),
+        entry(eid=1006, title="预训练(Pre-training)", category="home", content="预训练是一种深度学习技术，它涉及到..."),
+        entry(eid=1007, title="大语言模型(LLM)", category="understanding", content="大语言模型是一种强大的自然语言处理工具，它..."),
+        entry(eid=1008, title="多模态", category="understanding", content="多模态指的是结合了多种类型的数据或输入，如..."),
+        entry(eid=1009, title="强化学习(Reinforcement Learning)", category="home", content="强化学习是一种机器学习方法，它基于..."),
+        entry(eid=1010, title="无监督学习(Unsupervised Learning)", category="understanding", content="无监督学习是一种机器学习方法，其中..."),
+        entry(eid=1011, title="自然语言处理(NLP)", category="understanding", content="自然语言处理是计算机科学和人工智能的一个分支，旨在..."),
+        entry(eid=1012, title="通用人工智能(AGI)", category="home", content="通用人工智能是指在任何人类智能任务上都能表现..."),
+        entry(eid=1013, title="神经网络(Neural Network)", category="understanding", content="神经网络是一种模仿人脑神经元网络进行信息处理的..."),
+    ]
     session.add_all(entry_list)
+    entry_submissions = [
+        entry_submission(eid=1001, uid = 1, title="什么是LoRA？一文读懂低秩适应的概念、原理、优缺点和主要应用", category="home", content="LoRA（Low-Rank Adaptation）是..."),
+        entry_submission(eid=1002, uid = 2, title="什么是RLHF基于人类反馈的强化学习？", category="understanding", content="基于人类反馈的强化学习（RLHF）是..."),
+        entry_submission(eid=1014, uid = 3 , title="GAN，生成式对抗网络（Generative Adversarial Network）", category="news", content="生成式对抗网络（GAN）是一种深度学习模型，它由...")
+    ]
+    session.add_all(entry_submissions)
+    error_corrections = [
+            error_correction(eid=1004, uid = 1,  title="什么是LoRA？情感分析",  content="LoRA（Low-Rank Adaptation）是..."),
+            error_correction(eid=1005, uid = 2,  title="什么数据标注基于人类反馈的强化学习？",  content="基于人类反馈的强化学习（RLHF）是..."),
+            error_correction(eid=1013, uid = 3 ,  title="GAN，神经网络（Generative Adversarial Network）",  content="生成式对抗网络（GAN）是一种深度学习模型，它由...")
+        ]
+    session.add_all(error_corrections)
     user_entry_list= [user_entry(1,1001,"recommend"),
                       user_entry(1,1002,"recommend"),
                       user_entry(1,1003,"like"),

@@ -34,6 +34,17 @@ public class Entry {
         this.favors = favors;
     }
 
+    public Entry(EntrySubmission entrySubmission){
+        this.eid = entrySubmission.getEid();
+        this.title = entrySubmission.getTitle();
+        this.content = entrySubmission.getContent();
+        this.description = entrySubmission.getDescription();
+        this.category = entrySubmission.getCategory();
+        this.image = entrySubmission.getImage();
+        this.visits = 0;
+        this.likes = 0;
+        this.favors = 0;
+    }
     public Entry() {
     }
 

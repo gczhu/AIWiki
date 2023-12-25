@@ -17,13 +17,13 @@ public class User {
     private int points;
     private int level;
     private String name;
-    private char gender;
+    private String gender; // 因为char不能为空就改成了String
     private String phone;
     private String birth;
     private String image;
     private String description;
 
-    public User(int uid, String username, String password, String email, int role, int points, int level, String name, char gender, String phone, String birth, String image, String description) {
+    public User(int uid, String username, String password, String email, int role, int points, int level, String name, String gender, String phone, String birth, String image, String description) {
         this.uid = uid;
         this.username = username;
         this.password = password;
@@ -103,11 +103,11 @@ public class User {
         this.name = name;
     }
 
-    public char getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(char gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
