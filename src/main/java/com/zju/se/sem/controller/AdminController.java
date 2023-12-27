@@ -33,6 +33,26 @@ public class AdminController {
         return role == 1;
     }
 
+    @PostMapping("/adminLogin")
+    public Message adminLogin(@RequestBody User user) {
+        LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(User::getUsername, user.getUsername());
+        queryWrapper.eq(User::getPassword, user.getPassword());
+
+        List<User> users = userMapper.selectList(queryWrapper);
+        if (users.isEmpty()) {
+            return new Message(false, "密码错误", 20001);
+        } else {
+            int uid = users.get(0).getUid();
+            if(!isAdmin(uid))
+                return new Message(false, "无管理员权限", 20001);
+            String token = JwtUtils.generateToken(Integer.toString(uid));
+            return new Message(true, "认证成功", 20000)
+                    .data("token", token)
+                    .data("uid", uid);
+        }
+    }
+
     @PostMapping("/deleteEntry")
     public Message deleteEntry(
             @RequestHeader("Authorization") String token,
