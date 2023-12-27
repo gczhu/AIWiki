@@ -289,7 +289,7 @@ public class EntryController {
         }
     }
 
-    @PostMapping("/search")
+    @GetMapping("/search")
     public Message search(@RequestParam String keyword) {
         try {
             Set<Entry> resultEntries = new LinkedHashSet<>();

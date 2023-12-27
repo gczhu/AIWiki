@@ -36,7 +36,7 @@ public class AdminController {
     @PostMapping("/deleteEntry")
     public Message deleteEntry(
             @RequestHeader("Authorization") String token,
-            @RequestParam(defaultValue = "0") int id) {
+            @RequestBody Integer id) {
         try {
             Claims claims;
             int uid;
@@ -48,7 +48,6 @@ public class AdminController {
             }
             System.out.println("123");
             if (id == 0) {
-
                 return new Message(false, "删除词条失败", 20001);
             }
             if(!isAdmin(uid)){
