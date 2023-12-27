@@ -44,8 +44,9 @@ public class AdminController {
             return new Message(false, "密码错误", 20001);
         } else {
             int uid = users.get(0).getUid();
-            if(!isAdmin(uid))
+            if(!isAdmin(uid)) {
                 return new Message(false, "无管理员权限", 20001);
+            }
             String token = JwtUtils.generateToken(Integer.toString(uid));
             return new Message(true, "认证成功", 20000)
                     .data("token", token)
