@@ -56,7 +56,7 @@ public class AdminController {
     @PostMapping("/deleteEntry")
     public Message deleteEntry(
             @RequestHeader("Authorization") String token,
-            @RequestParam(defaultValue = "0") int id) {
+            @RequestBody Integer id) {
         try {
             Claims claims;
             int uid;
@@ -68,7 +68,6 @@ public class AdminController {
             }
             System.out.println("123");
             if (id == 0) {
-
                 return new Message(false, "删除词条失败", 20001);
             }
             if(!isAdmin(uid)){
@@ -90,7 +89,7 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/queryEntrySubmission")
+    @GetMapping("/queryEntrySubmission")
     public Message queryEntrySubmission(@RequestHeader("Authorization") String token) {
         try {
             Claims claims;
@@ -159,7 +158,7 @@ public class AdminController {
         }
     }
 
-    @PostMapping("/queryErrorCorrection")
+    @GetMapping("/queryErrorCorrection")
     public Message queryErrorCorrection(@RequestHeader("Authorization") String token) {
         try {
             Claims claims;
@@ -174,7 +173,6 @@ public class AdminController {
                 return new Message(false, "无管理员权限", 20001);
             }
             LambdaQueryWrapper<ErrorCorrection> errorCorrectionLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            errorCorrectionLambdaQueryWrapper.eq(ErrorCorrection::getStatus, "待处理");
             List<ErrorCorrection> errorCorrections = errorCorrectionMapper.selectList(errorCorrectionLambdaQueryWrapper);
             return new Message(true, "查询用户差错纠正成功", 20000).data("entrySubmissions", errorCorrections);
         } catch (Exception e) {
@@ -183,9 +181,7 @@ public class AdminController {
     }
     @PostMapping("/reviewErrorCorrection")
     public Message reviewErrorCorrection(@RequestHeader("Authorization") String token,
-                                         @RequestParam(defaultValue = "0") int ecid,
-                                         @RequestParam(defaultValue = "") String status,
-                                         @RequestParam(defaultValue = "") String comment) {
+                                         @RequestBody ErrorCorrectionReview errorCorrectionReview) {
         try {
             Claims claims;
             int uid;
@@ -198,13 +194,12 @@ public class AdminController {
             if(!isAdmin(uid)){
                 return new Message(false, "无管理员权限", 20001);
             }
-            if(ecid == 0){
+            if(errorCorrectionReview.getEcid() == 0){
                 return new Message(false, "审核用户差错纠正失败", 20001);
             }
-            if(!status.equals("")){
-                ErrorCorrection errorCorrection = errorCorrectionMapper.selectById(ecid);
-                errorCorrection.setStatus(status);
-                ErrorCorrectionReview errorCorrectionReview = new ErrorCorrectionReview(uid, ecid,status, comment);
+            if(!errorCorrectionReview.getStatus().equals("")){
+                ErrorCorrection errorCorrection = errorCorrectionMapper.selectById(errorCorrectionReview.getEcid());
+                errorCorrection.setStatus(errorCorrectionReview.getStatus());
                 LambdaQueryWrapper<ErrorCorrection> errorCorrectionLambdaQueryWrapper = new LambdaQueryWrapper<>();
                 errorCorrectionLambdaQueryWrapper.eq(ErrorCorrection::getEcid, errorCorrection.getEcid());
                 int res = errorCorrectionMapper.update(errorCorrection, errorCorrectionLambdaQueryWrapper) & errorCorrectionReviewMapper.insert(errorCorrectionReview);

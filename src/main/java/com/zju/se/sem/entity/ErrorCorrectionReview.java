@@ -34,4 +34,10 @@ public class ErrorCorrectionReview {
         this.comment = comment;
         this.reviewTime = LocalDateTime.now();
     }
+    public ErrorCorrectionReview(){
+        this.ecid = 0;
+        this.status = "";
+        this.comment = "";
+        this.reviewTime = LocalDateTime.now();
+    }
 }
