@@ -353,9 +353,7 @@ public class EntryController {
 
     @PostMapping("/modifyEntry")
     public Message modifyEntry(@RequestHeader("Authorization") String token,
-            @RequestParam(defaultValue = "0") int id,
-            @RequestParam(defaultValue = "") String title,
-            @RequestParam(defaultValue = "") String text) {
+            @RequestBody Entry entry) {
         try {
             Claims claims;
             int uid;
@@ -365,20 +363,12 @@ public class EntryController {
             } catch (Exception e) {
                 return new Message(false, "token错误", 50001);
             }
-            if (id == 0) {
+            if (entry.getEid() == 0) {
                 return new Message(false, "修改词条失败", 20001);
             }
-
             LambdaQueryWrapper<Entry> entryQueryWrapper = new LambdaQueryWrapper<>();
-            entryQueryWrapper.eq(Entry::getEid, id);
-            Entry entry = entryMapper.selectList(entryQueryWrapper).get(0);
+            entryQueryWrapper.eq(Entry::getEid, entry.getEid());
 
-            if (title.length() != 0) {
-                entry.setTitle(title);
-            }
-            if (text.length() != 0) {
-                entry.setContent(text);
-            }
             int role = userMapper.selectById(uid).getRole();
             if(role == 1){
                 if(entryMapper.update(entry, entryQueryWrapper) > 0){
@@ -404,11 +394,7 @@ public class EntryController {
 
     @PostMapping("/addEntry")
     public Message addEntry(@RequestHeader("Authorization") String token,
-            @RequestParam(defaultValue = "0") int id,
-            @RequestParam(defaultValue = "") String title,
-            @RequestParam(defaultValue = "") String text,
-            @RequestParam(defaultValue = "") String description,
-            @RequestParam(defaultValue = "") String category) {
+            @RequestBody Entry entry) {
         try {
             Claims claims;
             int uid;
@@ -419,44 +405,27 @@ public class EntryController {
                 return new Message(false, "token错误", 50001);
             }
 
-            Entry entry = new Entry();
-
-            if (id != 0) {
-                entry.setEid(id);
-            } else {
-                LambdaQueryWrapper<Entry> entryQueryWrapper = new LambdaQueryWrapper<>();
-                entryQueryWrapper.apply("CONVERT(eid, CHAR) LIKE '1%'")
-                        .orderByDesc(Entry::getEid)
-                        .last("LIMIT 1");
-                Entry entry1 = entryMapper.selectOne(entryQueryWrapper);
-                if (entry1 != null) {
-                    int eid = entry1.getEid();
-                    String s1 = Integer.toString(eid + 1);
-                    if (s1.charAt(0) == '2') {
-                        s1 = "1";
-                        for (int i = 0; i < s1.length(); i++) {
-                            s1 = s1 + "0";
-                        }
-                        entry.setEid(Integer.parseInt(s1));
-                    } else {
-                        entry.setEid(entry1.getEid() + 1);
+            LambdaQueryWrapper<Entry> entryQueryWrapper = new LambdaQueryWrapper<>();
+            entryQueryWrapper.apply("CONVERT(eid, CHAR) LIKE '1%'")
+                    .orderByDesc(Entry::getEid)
+                    .last("LIMIT 1");
+            Entry entry1 = entryMapper.selectOne(entryQueryWrapper);
+            if (entry1 != null) {
+                int eid = entry1.getEid();
+                String s1 = Integer.toString(eid + 1);
+                if (s1.charAt(0) == '2') {
+                    s1 = "1";
+                    for (int i = 0; i < s1.length(); i++) {
+                        s1 = s1 + "0";
                     }
+                    entry.setEid(Integer.parseInt(s1));
                 } else {
-                    entry.setEid(1000);
+                    entry.setEid(entry1.getEid() + 1);
                 }
+            } else {
+                entry.setEid(1000);
             }
-            if (title.length() != 0) {
-                entry.setTitle(title);
-            }
-            if (text.length() != 0) {
-                entry.setContent(text);
-            }
-            if (description.length() != 0) {
-                entry.setDescription(description);
-            }
-            if (category.length() != 0) {
-                entry.setCategory(category);
-            }
+
             int role = userMapper.selectById(uid).getRole();
             if(role == 1){
                 if(entryMapper.insert(entry) > 0){
