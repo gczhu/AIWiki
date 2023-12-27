@@ -28,6 +28,8 @@ public class EntryController {
     private ErrorCorrectionMapper errorCorrectionMapper;
     @Autowired
     private EntrySubmissionMapper entrySubmissionMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     @GetMapping("/topics")
     public Message getTopics(@RequestParam(defaultValue = "0") int uid) {
@@ -377,15 +379,24 @@ public class EntryController {
             if (text.length() != 0) {
                 entry.setContent(text);
             }
-
-            ErrorCorrection errorCorrection = new ErrorCorrection(uid, entry);
-            int res = errorCorrectionMapper.insert(errorCorrection);
-            if (res > 0) {
-                return new Message(true, "修改内容已上报，请等待管理员审核", 20000);
-            } else {
-                return new Message(false, "修改词条失败", 20001);
+            int role = userMapper.selectById(uid).getRole();
+            if(role == 1){
+                if(entryMapper.update(entry, entryQueryWrapper) > 0){
+                    return new Message(true, "词条已修改", 20000);
+                }
+                else{
+                    return new Message(false, "修改词条失败", 20001);
+                }
             }
-
+            else{
+                ErrorCorrection errorCorrection = new ErrorCorrection(uid, entry);
+                int res = errorCorrectionMapper.insert(errorCorrection);
+                if (res > 0) {
+                    return new Message(true, "修改内容已上报，请等待管理员审核", 20000);
+                } else {
+                    return new Message(false, "修改词条失败", 20001);
+                }
+            }
         } catch (Exception e) {
             return new Message(false, "修改词条失败", 20001);
         }
@@ -446,15 +457,24 @@ public class EntryController {
             if (category.length() != 0) {
                 entry.setCategory(category);
             }
-
-            EntrySubmission entrySubmission = new EntrySubmission(uid, entry);
-            int res = entrySubmissionMapper.insert(entrySubmission);
-            if (res > 0) {
-                return new Message(true, "词条内容已上报，请等待管理员审核", 20000);
-            } else {
-                return new Message(false, "添加词条失败", 20001);
+            int role = userMapper.selectById(uid).getRole();
+            if(role == 1){
+                if(entryMapper.insert(entry) > 0){
+                    return new Message(true, "词条已添加", 20000);
+                }
+                else{
+                    return new Message(false, "添加词条失败", 20001);
+                }
             }
-
+            else{
+                EntrySubmission entrySubmission = new EntrySubmission(uid, entry);
+                int res = entrySubmissionMapper.insert(entrySubmission);
+                if (res > 0) {
+                    return new Message(true, "词条内容已上报，请等待管理员审核", 20000);
+                } else {
+                    return new Message(false, "添加词条失败", 20001);
+                }
+            }
         } catch (Exception e) {
             return new Message(false, "添加词条失败", 20001);
         }
