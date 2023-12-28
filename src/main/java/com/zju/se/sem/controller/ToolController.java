@@ -28,7 +28,7 @@ public class ToolController {
         List<ToolInfo> res = new ArrayList<>();
         for (int i = 0; i < tools.size(); i++) {
             Tool tool = tools.get(i);
-            res.add(new ToolInfo(tool.getTid(), tool.getTitle(), tool.getHref(), tool.getDescription(), tool.getCategory()));
+            res.add(new ToolInfo(tool.getTid(), tool.getTitle(), tool.getHref(), tool.getUrl(), tool.getDescription(), tool.getCategory()));
         }
         return new Message(true, "推荐工具获取成功", 20000).data("tools", res);
     }
@@ -41,7 +41,7 @@ public class ToolController {
         List<ToolInfo> res = new ArrayList<>();
         for (int i = 0; i < tools.size(); i++) {
             Tool tool = tools.get(i);
-            res.add(new ToolInfo(tool.getTid(), tool.getTitle(), tool.getHref(), tool.getDescription(), tool.getCategory()));
+            res.add(new ToolInfo(tool.getTid(), tool.getTitle(), tool.getHref(), tool.getUrl(), tool.getDescription(), tool.getCategory()));
         }
         return new Message(true, "推荐工具获取成功", 20000).data("tools", res);
     }

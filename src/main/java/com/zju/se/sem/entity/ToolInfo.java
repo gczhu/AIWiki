@@ -8,13 +8,15 @@ public class ToolInfo {
     private int id;
     private String title;
     private String href;
+    private String url;
     private String description;
     private String category;
 
-    public ToolInfo(int id, String title, String href, String description, String category) {
+    public ToolInfo(int id, String title, String href, String url, String description, String category) {
         this.id = id;
         this.title = title;
         this.href = href;
+        this.url = url;
         this.description = description;
         this.category = category;
     }
@@ -43,6 +45,14 @@ public class ToolInfo {
         this.href = href;
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -65,6 +75,7 @@ public class ToolInfo {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", href='" + href + '\'' +
+                ", url='" + url + '\'' +
                 ", description='" + description + '\'' +
                 ", category='" + category + '\'' +
                 '}';

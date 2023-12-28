@@ -162,14 +162,16 @@ class tool(Base):
     tid = Column(Integer, primary_key=True)
     title = Column(String(45), nullable=False)
     href = Column(String(256), nullable=False)
+    url = Column(String(256), nullable=False)
     description = Column(String(256), nullable=False)
     category = Column(String(45), nullable=False)
     recommend = Column(Integer, nullable=False)
 
-    def __init__(self, tid, title, herf, description, category, recommend=1):
-        self.eid = tid
+    def __init__(self, tid, title, href, url, description, category, recommend=1):
+        self.tid = tid
         self.title = title
-        self.herf = herf
+        self.href = href
+        self.url = url
         self.description = description
         self.category = category
         self.recommend = recommend
@@ -380,7 +382,7 @@ if __name__ == '__main__':
                       eid=1015,
                         title="AIGC", 
                         category="news", 
-                        image="image/topicPics/what-is-gan.png",
+                        image="image/topicPics/what-is-aigc.png",
                         content=open("./docs/14.md").read(),
                         description="本文介绍了什么是AIGC：AI Generated Content，人工智能生成内容及其工作原理、应用场景和面临的挑战",
 
@@ -389,7 +391,7 @@ if __name__ == '__main__':
                       eid=1016, 
                       title="深度学习", 
                       category="news", 
-                      image="image/topicPics/what-is-gan.png", 
+                      image="image/topicPics/what-is-deep-learning.png", 
                       content=open("./docs/14.md").read(),
                       description="深度学习（Deep Learning）是机器学习的一个子集，本文介绍了什么是深度学习、深度学习的工作原理、深度学习与机器学习的区别、深度学习的开发框架以及深度学...",
 
@@ -398,7 +400,7 @@ if __name__ == '__main__':
                       eid=1017, 
                       title="机器学习", 
                       category="news", 
-                      image="image/topicPics/what-is-gan.png", 
+                      image="image/topicPics/what-is-machine-learning.png", 
                       content=open("./docs/14.md").read(),
                       description="本文介绍了什么是机器学习、机器学习的技术分类、机器学习的常见算法以及机器学习的实际应用，让你对机器学习这一AI技术有一个初步的认识。",
 
@@ -435,4 +437,9 @@ if __name__ == '__main__':
                        user_entry(1, 1005, "like"),
                        user_entry(1, 1006, "recommend")
                        ]
+    tool_array = eval(open('/home/azx/Desktop/AIWiki/src/main/resources/toolText.py').read())
+    tool_list = []
+    for map in tool_array:
+        tool_list.append(tool(**map))
+    session.add_all(tool_list)
     session.commit()
