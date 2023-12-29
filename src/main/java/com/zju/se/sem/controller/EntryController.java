@@ -97,7 +97,7 @@ public class EntryController {
         try {
             // 查找所有小词条索引
             LambdaQueryWrapper<Entry> entryQueryWrapper = new LambdaQueryWrapper<>();
-            entryQueryWrapper.apply("CONVERT(eid, CHAR) LIKE '3%'");
+            // entryQueryWrapper.apply("CONVERT(eid, CHAR) LIKE '3%'");
             List<Entry> entries = entryMapper.selectList(entryQueryWrapper);
 
             // 根据小词条索引ID查询各词条信息并返回

@@ -405,6 +405,182 @@ if __name__ == '__main__':
                       description="本文介绍了什么是机器学习、机器学习的技术分类、机器学习的常见算法以及机器学习的实际应用，让你对机器学习这一AI技术有一个初步的认识。",
 
                       ),
+                  entry(eid=1018, 
+                        title="强化学习",
+                        category="knowledge_map", 
+                        image="image/topicPics/reinforcement-learning.png", 
+                        content=open("./docs/9.md").read(),
+                        description="强化学习（RL）是机器学习的一个分支，重点是训练算法通过与环境的互动来做出决定。它的灵感来自于人类和动物从他们的经验中学习以实现目标的方式。在这篇文...",
+
+                        ),
+                  entry(eid=1019, 
+                        title="无监督学习",
+                        category="hot_entry", 
+                        image="image/topicPics/what-is-unsupervised-learning-1.png",
+                        content=open("./docs/10.md").read(),
+                        description="无监督学习是机器学习的一种类型，模型从数据中学习，没有任何明确的指导或标记的例子。本文介绍了其定义、主要算法、应用和挑战。",
+
+                          ),
+                  entry(eid=1020, 
+                        title="自然语言处理",
+                        category="knowledge_map", 
+                        image="image/topicPics/what-is-nlp.png",
+                        content=open("./docs/11.md").read(),
+                        description="NLP（Natural Language Processing），即自然语言处理，是计算机科学的一个领域，重点是创建能够理解人类语音和语言的计算机和软件。NLP使用人工智能和机器学...",
+
+                          ),
+                  entry(eid=1021, 
+                        title="通用人工智能",
+                        category="knowledge_map",
+                        image="image/topicPics/agi-artificial-general-intelligence.png",
+                        content=open("./docs/12.md").read(),
+                        description="AGI 是 Artificial General Intelligence 的缩写，中文翻译为“通用人工智能”，该术语指的是机器能够完成人类能够完成的任何智力任务的能力。",
+
+                          ),
+                  entry(eid=1022, 
+                        title="神经网络",
+                        category="hot_entry", 
+                        image="image/topicPics/what-is-neural-network.png",
+                        content=open("./docs/13.md").read(),
+                        description="神经网络（Neural Network）作为人工智能中的一种计算模型，是受人脑启发的一种机器学习类型。本文介绍了其定义、工作原理、类型、优势、局限和其应用场景。",
+
+                          ),
+                  entry(
+                      eid=1023, 
+                      title="生成式对抗网络", 
+                      category="knowledge_map", 
+                      image="image/topicPics/what-is-gan.png", 
+                      content=open("./docs/14.md").read(),
+                      description="生成式对抗网络（GAN，英文全称Generative Adversarial Network）是一种深度学习模型，由于其生成高质量、真实数据的能力，近年来获得了极大的关注。在这篇文...",
+
+                      ),
+                  entry(
+                      eid=1024,
+                        title="AIGC", 
+                        category="hot_entry", 
+                        image="image/topicPics/what-is-aigc.png",
+                        content=open("./docs/14.md").read(),
+                        description="本文介绍了什么是AIGC：AI Generated Content，人工智能生成内容及其工作原理、应用场景和面临的挑战",
+
+                          ),
+                  entry(
+                      eid=1025, 
+                      title="深度学习", 
+                      category="hot_entry", 
+                      image="image/topicPics/what-is-deep-learning.png", 
+                      content=open("./docs/14.md").read(),
+                      description="深度学习（Deep Learning）是机器学习的一个子集，本文介绍了什么是深度学习、深度学习的工作原理、深度学习与机器学习的区别、深度学习的开发框架以及深度学...",
+
+                      ),
+                  entry(
+                      eid=1026, 
+                      title="机器学习", 
+                      category="knowledge_map", 
+                      image="image/topicPics/what-is-machine-learning.png", 
+                      content=open("./docs/14.md").read(),
+                      description="本文介绍了什么是机器学习、机器学习的技术分类、机器学习的常见算法以及机器学习的实际应用，让你对机器学习这一AI技术有一个初步的认识。",
+
+                      ),
+                  entry(eid=1027,
+                        title="RLHF",
+                        category="recent_edit",
+                        image="image/topicPics/what-is-rlhf.png",
+                        content=open("./docs/2.md").read(),
+                        description="基于人类反馈的强化学习（RLHF，Reinforcement Learning from Human Feedback）是人工智能（AI）领域的一个新兴研究领域，它将强化学习技术与人类反馈相结合...",
+
+                        ),
+                  entry(eid=1028,
+                        title="CNN",
+                        category="recent_edit",
+                        image="image/topicPics/convolutional-neural-network-1.png",
+                        content=open("./docs/3.md").read(),
+                        description="卷积神经网络（Convolutional Neural Network，CNN）是一类主要用于计算机视觉领域的深度学习算法，它们在各个领域都有应用，包括图像和视频识别、自然语言处...",
+
+                        ),
+                  entry(eid=1029,
+                        title="情感分析",
+                        category="recent_edit",
+                        image="image/topicPics/what-is-sentiment-analysis-1.png", 
+                        content=open("./docs/4.md").read(),
+                        description="情感分析是自然语言处理的一个重要方面，它允许组织从非结构化文本数据中提取有价值的见解。通过了解人们的意见和情绪，企业、研究人员和政府可以做出更明智...",
+
+                        ),
+                  entry(eid=1030, 
+                        title="数据标注",
+                        category="recent_edit",
+                        image="image/topicPics/data-annotation.png",
+                        content=open("./docs/5.md").read(),
+                        description="机器学习过程的一个重要方面便是数据标注（Data Annotation），数据标注是一个对原始数据进行标记和分类的过程，使其可用于训练ML模型。本文将概述数据标注、...",
+
+                          ),
+                  entry(eid=1031, 
+                        title="预训练", 
+                        category="recent_edit",
+                        image="image/topicPics/what-is-pre-training.png", 
+                        content=open("./docs/6.md").read(),
+                        description="预训练是现代机器学习模型的支柱，在本篇文章中，我们将探讨预训练的概念定义，它在人工智能中的重要性，用于实现预训练的各种技术，以及该领域的研究人员所...",
+
+                        ),
+                  entry(eid=1032,
+                         title="大语言模型",
+                        category="recent_edit", 
+                        image="image/topicPics/what-is-large-language-model.png", 
+                        content=open("./docs/7.md").read(),
+                        description="自然语言中最重要的发展便是大语言模型（LLM），在本篇文章中，我们将浅显地科普一下大语言模型，讨论其定义、训练方式、流行原因、常见大语言模型例子以及其...",
+
+                        ),
+                  entry(eid=1033, 
+                        title="多模态", 
+                        category="new_entry",
+                        image="image/topicPics/what-is-multimodal-deep-learning.png",
+                        content=open("./docs/8.md").read(),
+                        description="多模态深度学习（英文名：Multimodal Deep Learning）是人工智能（AI）的一个子领域，其重点是开发能够同时处理和学习多种类型数据的模型。本文解释了其定义...",
+
+                          ),
+                  entry(
+                      eid=1034, 
+                      title="生成式对抗网络", 
+                      category="new_entry", 
+                      image="image/topicPics/what-is-gan.png", 
+                      content=open("./docs/14.md").read(),
+                      description="生成式对抗网络（GAN，英文全称Generative Adversarial Network）是一种深度学习模型，由于其生成高质量、真实数据的能力，近年来获得了极大的关注。在这篇文...",
+
+                      ),
+                  entry(
+                      eid=1035,
+                        title="AIGC", 
+                        category="new_entry", 
+                        image="image/topicPics/what-is-aigc.png",
+                        content=open("./docs/14.md").read(),
+                        description="本文介绍了什么是AIGC：AI Generated Content，人工智能生成内容及其工作原理、应用场景和面临的挑战",
+
+                          ),
+                  entry(
+                      eid=1036, 
+                      title="深度学习", 
+                      category="new_entry", 
+                      image="image/topicPics/what-is-deep-learning.png", 
+                      content=open("./docs/14.md").read(),
+                      description="深度学习（Deep Learning）是机器学习的一个子集，本文介绍了什么是深度学习、深度学习的工作原理、深度学习与机器学习的区别、深度学习的开发框架以及深度学...",
+
+                      ),
+                  entry(
+                      eid=1037, 
+                      title="机器学习", 
+                      category="new_entry", 
+                      image="image/topicPics/what-is-machine-learning.png", 
+                      content=open("./docs/14.md").read(),
+                      description="本文介绍了什么是机器学习、机器学习的技术分类、机器学习的常见算法以及机器学习的实际应用，让你对机器学习这一AI技术有一个初步的认识。",
+
+                      ),
+                  entry(eid=1038, 
+                        title="强化学习",
+                        category="new_entry", 
+                        image="image/topicPics/reinforcement-learning.png", 
+                        content=open("./docs/9.md").read(),
+                        description="强化学习（RL）是机器学习的一个分支，重点是训练算法通过与环境的互动来做出决定。它的灵感来自于人类和动物从他们的经验中学习以实现目标的方式。在这篇文...",
+
+                        ),
                   #   entry(
                   #       eid=1014, title="GAN，生成式对抗网络（Generative Adversarial Network）", category="news", image="image/topicPics/what-is-gan.png", content=open("./docs/14.md").read()),
                   #   entry(
@@ -412,6 +588,11 @@ if __name__ == '__main__':
 
                   ]
     session.add_all(entry_list)
+    news_entrys= eval(open('./newsText.py').read())
+    news_list = []
+    for map in news_entrys:
+        news_list.append(entry(**map))
+    session.add_all(news_list)
     entry_submissions = [
         entry_submission(eid=1001, uid=1, title="什么是LoRA？一文读懂低秩适应的概念、原理、优缺点和主要应用",
                          category="home", content="LoRA（Low-Rank Adaptation）是..."),
