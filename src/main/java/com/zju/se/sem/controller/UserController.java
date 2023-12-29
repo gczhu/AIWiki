@@ -104,21 +104,39 @@ public class UserController {
             return new Message(false, "用户信息获取失败，token错误", 50001);
         }
     }
-
-    @PostMapping("/modifyInfo")
-    public Message modifyInfo(@RequestParam(defaultValue = "0") int uid,
-                              @RequestParam(defaultValue = "") String username,
-                              @RequestParam(defaultValue = "") String email,
-                              @RequestParam(defaultValue = "") String password,
-                              @RequestParam(defaultValue = "") String role,
-                              @RequestParam(defaultValue = "") String points,
-                              @RequestParam(defaultValue = "") String level,
-                              @RequestParam(defaultValue = "") String name,
-                              @RequestParam(defaultValue = "") String gender,
-                              @RequestParam(defaultValue = "") String phone,
-                              @RequestParam(defaultValue = "") String birth,
-                              @RequestParam(defaultValue = "") String image,
-                              @RequestParam(defaultValue = "") String description) {
+/**
+ * {
+    "role": 0,
+    "gender": "",
+    "level": 0,
+    "birth": null,
+    "description": "",
+    "points": 0,
+    "uid": 2,
+    "password": "123456",
+    "phone": "15377273704",
+    "img_url": "",
+    "name": "zhangsan",
+    "email": "1120712503@qq.com",
+    "username": "zhangsan",
+    "address": "浙江省杭州市"
+}
+ */
+    @GetMapping("/modifyInfo")
+    public Message modifyInfo(@RequestParam(name="uid", defaultValue = "0") int uid,
+                              @RequestParam(name="username",defaultValue = "") String username,
+                              @RequestParam(name="email",defaultValue = "") String email,
+                              @RequestParam(name="password",defaultValue = "") String password,
+                              @RequestParam(name="role",defaultValue = "") String role,
+                              @RequestParam(name="points",defaultValue = "") String points,
+                              @RequestParam(name="level",defaultValue = "") String level,
+                              @RequestParam(name="name",defaultValue = "") String name,
+                              @RequestParam(name="gender",defaultValue = "") String gender,
+                              @RequestParam(name="phone",defaultValue = "") String phone,
+                              @RequestParam(name="birth",defaultValue = "") String birth,
+                              @RequestParam(name="img_url",defaultValue = "") String image,
+                              @RequestParam(name="address",defaultValue = "") String address,
+                              @RequestParam(name="description",defaultValue = "") String description) {
 
 //        int UID;
 //        try {
