@@ -33,4 +33,10 @@ public class EntrySubmissionReview {
         this.comment = comment;
         this.reviewTime = LocalDateTime.now();
     }
+    public EntrySubmissionReview(){
+        this.esid = 0;
+        this.status = "";
+        this.comment = "";
+        this.reviewTime = LocalDateTime.now();
+    }
 }

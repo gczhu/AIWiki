@@ -105,7 +105,6 @@ public class AdminController {
                 return new Message(false, "无管理员权限", 20001);
             }
             LambdaQueryWrapper<EntrySubmission> entrySubmissionQueryWrapper = new LambdaQueryWrapper<>();
-            entrySubmissionQueryWrapper.eq(EntrySubmission::getStatus, "待处理");
             entrySubmissionQueryWrapper.eq(EntrySubmission::getAdmin, uid);
             List<EntrySubmission> entrySubmissions = entrySubmissionMapper.selectList(entrySubmissionQueryWrapper);
             return new Message(true, "查询用户添加词条成功", 20000).data("entrySubmissions", entrySubmissions);
@@ -116,9 +115,7 @@ public class AdminController {
     }
     @PostMapping("/reviewEntrySubmission")
     public Message reviewEntrySubmission(@RequestHeader("Authorization") String token,
-                                  @RequestParam(defaultValue = "0") int esid,
-                                  @RequestParam(defaultValue = "") String status,
-                                  @RequestParam(defaultValue = "") String comment) {
+                                  @RequestBody EntrySubmissionReview entrySubmissionReview) {
         try {
             Claims claims;
             int uid;
@@ -131,13 +128,12 @@ public class AdminController {
             if(!isAdmin(uid)){
                 return new Message(false, "无管理员权限", 20001);
             }
-            if(esid == 0){
+            if(entrySubmissionReview.getEsid() == 0){
                 return new Message(false, "审核用户添加词条失败", 20001);
             }
-            if(!status.equals("")){
-                EntrySubmission entrySubmission = entrySubmissionMapper.selectById(esid);
-                entrySubmission.setStatus(status);
-                EntrySubmissionReview entrySubmissionReview = new EntrySubmissionReview(esid, uid, status, comment);
+            if(!entrySubmissionReview.getStatus().equals("")){
+                EntrySubmission entrySubmission = entrySubmissionMapper.selectById(entrySubmissionReview.getEsid());
+                entrySubmission.setStatus(entrySubmissionReview.getStatus());
                 LambdaQueryWrapper<EntrySubmission> entrySubmissionLambdaQueryWrapper = new LambdaQueryWrapper<>();
                 entrySubmissionLambdaQueryWrapper.eq(EntrySubmission::getEsid, entrySubmission.getEsid());
                 int res = entrySubmissionMapper.update(entrySubmission, entrySubmissionLambdaQueryWrapper) & entrySubmissionReviewMapper.insert(entrySubmissionReview);
@@ -175,7 +171,7 @@ public class AdminController {
             }
             LambdaQueryWrapper<ErrorCorrection> errorCorrectionLambdaQueryWrapper = new LambdaQueryWrapper<>();
             List<ErrorCorrection> errorCorrections = errorCorrectionMapper.selectList(errorCorrectionLambdaQueryWrapper);
-            return new Message(true, "查询用户差错纠正成功", 20000).data("entrySubmissions", errorCorrections);
+            return new Message(true, "查询用户差错纠正成功", 20000).data("errorCorrections", errorCorrections);
         } catch (Exception e) {
             return new Message(false, "查询用户差错纠正失败", 20001);
         }
