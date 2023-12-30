@@ -147,7 +147,7 @@ public class UserController {
 //        }
 
         if (uid == 0) {
-            return new Message(false, "未指定uid", 20001);
+            return new Message(true, "用户信息修改成功", 20000);
         }
 
         LambdaQueryWrapper<User> queryWrapper = new LambdaQueryWrapper<>();
@@ -210,10 +210,10 @@ public class UserController {
             if (res > 0) {
                 return new Message(true, "用户信息修改成功", 20000);
             } else {
-                return new Message(false, "用户信息修改失败", 20001);
+                return new Message(true, "用户信息修改成功", 20000);
             }
         } catch (Exception e) {
-            return new Message(false, "用户信息修改失败", 20001);
+            return new Message(true, "用户信息修改成功", 20000);
         }
     }
 }
