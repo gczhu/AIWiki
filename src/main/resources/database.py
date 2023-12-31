@@ -593,6 +593,13 @@ if __name__ == '__main__':
     for map in news_entrys:
         news_list.append(entry(**map))
     session.add_all(news_list)
+
+    develop_entrys= eval(open('./developText.py').read())
+    develop_list = []
+    for map in develop_entrys:
+        develop_list.append(entry(**map))
+    session.add_all(develop_list)
+    
     entry_submissions = [
         entry_submission(eid=1001, uid=1, title="什么是LoRA？一文读懂低秩适应的概念、原理、优缺点和主要应用",
                          category="home", content="LoRA（Low-Rank Adaptation）是..."),

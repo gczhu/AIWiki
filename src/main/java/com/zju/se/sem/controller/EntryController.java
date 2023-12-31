@@ -46,6 +46,7 @@ public class EntryController {
                     topics.add(new Topic(entry.getEid(), entry.getTitle(), entry.getDescription(), entry.getCategory(),
                             entry.getImage()));
                 }
+                Collections.shuffle(topics);
 
                 return new Message(true, "专题信息获取成功", 20000)
                         .data("topics", topics);
@@ -69,9 +70,10 @@ public class EntryController {
                         topics.add(new Topic(entry.getEid(), entry.getTitle(), entry.getDescription(),
                                 entry.getCategory(), entry.getImage()));
                     }
+                    Collections.shuffle(topics);
 
                     return new Message(true, "专题信息获取成功", 20000)
-                            .data("topics", topics);
+                            .data("topics",  topics);
                 }
 
                 // 如果有该用户的指定推荐词条，则根据词条ID查询各词条信息并以列表返回
@@ -83,6 +85,7 @@ public class EntryController {
                     topics.add(new Topic(entry.getEid(), entry.getTitle(), entry.getDescription(), entry.getCategory(),
                             entry.getImage()));
                 }
+                Collections.shuffle(topics);
 
                 return new Message(true, "专题信息获取成功", 20000)
                         .data("topics", topics);
@@ -141,7 +144,7 @@ public class EntryController {
                 Entry entry = entries.get(i);
                 goodEntries.add(new GoodEntry(entry.getEid(), entry.getTitle()));
             }
-
+            Collections.shuffle(goodEntries);
             return new Message(true, "优质词条获取成功", 20000)
                     .data("goodEntries", goodEntries);
         } catch (Exception e) {
